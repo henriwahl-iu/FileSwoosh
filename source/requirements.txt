@@ -1,0 +1,9 @@
+# needed for flask adhoc certificates
+cryptography==42.0.8
+flask==3.0.3
+httpx==0.27.0
+multicast_expert==1.4.0
+netifaces==0.11.0
+pyinstaller==6.8.0
+pyqt6==6.7.0
+requests==2.32.3

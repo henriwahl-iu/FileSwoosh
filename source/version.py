@@ -1,0 +1,9 @@
+# Version for FileSwoosh
+# © 2024 Henri Wahl
+
+MAJOR = 1
+MINOR = 0
+PATCH = 0
+BUILD = '001'
+VERSION = f'{MAJOR}.{MINOR}.{PATCH}'
+VERSION_WITH_BUILD = f'{MAJOR}.{MINOR}.{PATCH}.{BUILD}'
