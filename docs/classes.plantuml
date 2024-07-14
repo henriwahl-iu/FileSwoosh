@@ -1,0 +1,77 @@
+@startuml classes
+set namespaceSeparator none
+class "ClientThread" as app.backend.client.ClientThread {
+  cancel_transaction()
+  confirm_transaction()
+  connect()
+  request()
+  request_transaction()
+  run()
+  start_transaction()
+}
+class "DiscoveryThread" as app.backend.discovery.DiscoveryThread {
+  signal_hosts_updated
+  add_host_manually()
+  run()
+  update_hosts()
+}
+class "GUI" as app.gui.GUI {
+  engine
+  signal_add_host_manually
+  signal_cancel_transaction
+  signal_confirm_transaction
+  signal_hosts_updated
+  signal_request_transaction
+  signal_transaction_requested
+  slot_add_host_manually()
+  slot_cancel_transaction()
+  slot_confirm_transaction()
+  slot_hosts_updated()
+  slot_request_transaction()
+  slot_transaction_requested()
+}
+class "Host" as app.storage.Host {
+  address
+  busy
+  discovered
+  hostname
+  timestamp
+  username
+  get_as_dict()
+}
+class "ServerThread" as app.backend.server.ServerThread {
+  http_server
+  listen_address
+  signal_start_transaction
+  signal_transaction_requested
+  cancel_transaction()
+  catch_all()
+  confirm_transaction()
+  connect()
+  request_transaction()
+  run()
+  start_transaction()
+}
+class "SimpleResponse" as app.backend.client.SimpleResponse {
+  data
+  headers
+}
+class "Transaction" as app.storage.Transaction {
+  address
+  file_path
+  save_folder
+  stage
+  transaction_id
+}
+
+app.backend.discovery.DiscoveryThread --> app.storage.Host : "may create"
+app.backend.discovery.DiscoveryThread --> app.gui.GUI : "clients updated"
+app.backend.client.ClientThread --> app.storage.Transaction : "initiates"
+app.backend.client.ClientThread --> app.backend.client.SimpleResponse : "uses"
+app.backend.server.ServerThread --> app.storage.Host : "creates"
+app.backend.server.ServerThread --> app.gui.GUI : "transaction requested"
+app.backend.server.ServerThread --> app.backend.client.ClientThread : "starts transaction"
+app.gui.GUI --> app.backend.client.ClientThread : "requests transaction"
+app.gui.GUI --> app.backend.client.ClientThread : "confirm transaction"
+app.gui.GUI --> app.backend.discovery.DiscoveryThread : "add host manually"
+@enduml
