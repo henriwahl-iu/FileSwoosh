@@ -1,0 +1,18 @@
+@startuml
+start
+    note left
+        host 2
+    end note
+
+:initialize ClientThread;
+:enter multicast group;
+repeat
+    :receive multicast message;
+    note left
+        received by host 1
+    end note
+    :connect to host 1 via HTTPS "/connect";
+repeat while (true)
+
+stop
+@enduml

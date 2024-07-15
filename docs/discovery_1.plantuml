@@ -1,0 +1,34 @@
+@startuml
+start
+    note left
+        host 1
+    end note
+fork
+:initialize DiscoveryThread;
+:enter multicast group;
+repeat
+    :send multicast message;
+    note left
+        sent to all hosts
+    end note
+    :update hosts;
+    :emit hosts_updated signal;
+    note left
+        updates GUI
+    end note
+repeat while (true)
+fork again
+    :initialize ServerThread;
+    :start HTTPS server;
+    repeat
+        :wait for connection to route "/connect";
+        :add remote host to known hosts;
+    repeat while (true)
+
+end fork
+    note right
+  Both DiscoveryThread and ServerThread
+  process the 'hosts' dictionary
+end note
+stop
+@enduml
