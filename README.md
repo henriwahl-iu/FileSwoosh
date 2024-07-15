@@ -39,7 +39,7 @@ python main.py
 For building the application into a standalone executable, use PyInstaller with the following command:
 
 ```shell
-pyinstaller --onefile --add-data resources/:resources/ --windowed --icon resources/logo.ico --name FileSwoosh main.py
+pyinstaller --onefile --add-data resources/:resources/ --windowed --icon resources/images/logo.ico --name FileSwoosh main.py
 ```
 
 ## License
