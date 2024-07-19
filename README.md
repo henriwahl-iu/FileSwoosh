@@ -4,7 +4,7 @@ This is the documentation for the project software engineering course at the IU.
 Find the following in the subfolders:
 
 - [docs](./docs/) some diagrams and video footage of the app in action
-- [iu](./iu/) the PDF documents as required by course adssignment
+- [iu](./iu/) the PDF documents as required by course assignment
 - [source](./source/) the pure source of the app
 
 ## Getting Started
