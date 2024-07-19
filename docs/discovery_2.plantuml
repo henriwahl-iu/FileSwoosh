@@ -4,7 +4,7 @@ start
         host 2
     end note
 
-:initialize ClientThread;
+:instantiate client_thread from ClientThread;
 :enter multicast group;
 repeat
     :receive multicast message;
@@ -12,7 +12,7 @@ repeat
         received by host 1
     end note
     :connect to host 1 via HTTPS "/connect";
-repeat while (true)
+repeat while (client_thread still running) is (true)
 
 stop
 @enduml
