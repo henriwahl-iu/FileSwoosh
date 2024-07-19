@@ -1,5 +1,12 @@
 # FileSwoosh
 
+This is the documentation for the project software engineering course at the IU.
+Find the following in the subfolders:
+
+- [docs](./docs/) some diagrams and video footage of the app in action
+- [iu](./iu/) the PDF documents as required by course adssignment
+- [source](./source/) the pure source of the app
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
