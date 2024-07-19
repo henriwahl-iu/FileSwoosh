@@ -11,7 +11,8 @@ from PyQt6.QtCore import QThread, pyqtSignal, pyqtSlot
 
 from ..config import MULTICAST_ADDRESS, PORT, TIME_TO_LIVE
 from ..helpers import get_default_address
-from ..storage import Host, hosts, transactions
+from ..storage import Host, hosts, transactions, multicast_cache
+
 
 class DiscoveryThread(QThread):
     """
@@ -51,15 +52,20 @@ class DiscoveryThread(QThread):
 
     def update_hosts(self):
         now = datetime.now()
-        # Remove hosts that have not responded within the TIME_TO_LIVE + some tolerance period
+        # Remove hosts that have not responded within the TIME_TO_LIVE and are
+        # not present anymore in the multicast cache
         for address in {address: host for address, host in hosts.items() if
                         now - host.timestamp > timedelta(seconds=TIME_TO_LIVE) and
-                        host.discovered}.keys():
+                        host.discovered and address not in multicast_cache}.keys():
             del hosts[address]
             # Cancel transactions for removed hosts
             for transaction_id in transactions['in']:
                 if transactions['in'][transaction_id].address == address:
                     transactions['in'][transaction_id].stage = 'canceled'
+        # delete multicast cache entries that have expired
+        for address in {address: timestamp for address, timestamp in multicast_cache.items() if
+                        now - timestamp > timedelta(seconds=TIME_TO_LIVE)}.keys():
+            del multicast_cache[address]
 
     @pyqtSlot(str, str)
     def add_host_manually(self, hostname: str = '', address: str = ''):

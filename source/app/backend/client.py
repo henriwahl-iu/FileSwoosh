@@ -1,6 +1,6 @@
 # Client part of FileSwoosh
 # © 2024 Henri Wahl
-
+from datetime import datetime
 from json import JSONDecodeError, dumps
 from socket import AF_INET6
 
@@ -12,13 +12,13 @@ from PyQt6.QtCore import QThread, pyqtSlot
 from ..config import MULTICAST_ADDRESS, PORT, HOSTNAME, USERNAME
 from ..helpers import get_default_interface_ipv6_list, get_link_local_address_of_ipv4_default_route, deqmlify_file_path, \
     get_host_info
-from ..storage import link_local_address_cache, transactions, Transaction
+from ..storage import link_local_address_cache, multicast_cache, transactions, Transaction
 
 # Initialize an HTTP client with specific configurations to avoid using the environment's proxy settings,
-# disable SSL verification, and set a timeout of 30 seconds.
+# disable SSL verification, and set a timeout of 60 seconds.
 http_client = httpx.Client(trust_env=False,
                            verify=False,
-                           timeout=30)
+                           timeout=60)
 
 
 class SimpleResponse:
@@ -82,6 +82,8 @@ class ClientThread(QThread):
                     packet, address_port_tuple = recv_result
                     address = address_port_tuple[0]
                     scope_id = address_port_tuple[3]
+                    # Cache the multicast sender's address with the current timestamp
+                    multicast_cache[address] = datetime.now()
                     # Cache the sender's address if it's a link-local address and not already cached.
                     if address.startswith('fe80:') and not link_local_address_cache.get(address):
                         link_local_address_cache[address] = f'{address}%{scope_id}'

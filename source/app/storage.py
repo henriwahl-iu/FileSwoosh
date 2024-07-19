@@ -14,7 +14,8 @@ transactions = {'in': dict(),
 # Cache for link-local addresses to connect link local addresses
 # with their appropriate scope IDs
 link_local_address_cache = dict()
-
+# Cache for addresses of hosts in multicast group
+multicast_cache = dict()
 
 class Transaction:
     """

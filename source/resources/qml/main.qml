@@ -399,8 +399,8 @@ ApplicationWindow {
                     color: "green"
                     //
                     onClicked: {
-                        gui.slot_add_host(hostNameField.text, ipAddressField.text)
-                        addHostDialog.close()
+                        gui.slot_add_host_manually(hostNameField.text, ipAddressField.text);
+                        addHostDialog.close();
                     }
                 }
             }
